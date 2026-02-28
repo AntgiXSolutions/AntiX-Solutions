@@ -3,66 +3,413 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AntgiX | Tech Studio</title>
+    <title>AntgiX | Estándar Digital 2026</title>
+    
+    <!-- Importamos Tailwind para el diseño y Lucide para los iconos -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .bg-grid { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath d='M0 40 L40 40 L40 0' fill='none' stroke='%23ffffff05' stroke-width='1'/%3E%3C/svg%3E"); }
+        /* CONFIGURACIÓN DE COLORES Y ESTILOS BASE */
+        :root {
+            --primary: #3b82f6; /* Azul */
+            --accent: #a855f7;  /* Púrpura */
+            --bg: #050505;      /* Fondo Negro Profundo */
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg);
+            color: #ffffff;
+            cursor: default;
+        }
+
+        /* EFECTO DE TEXTURA (GRANO DIGITAL) */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://grainy-gradients.vercel.app/noise.svg');
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* TARJETAS CON EFECTO DE CRISTAL (GLASSMORPHISM) */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(96, 165, 250, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+
+        /* TEXTOS CON DEGRADADO AZUL/PÚRPURA */
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+        }
+
+        /* ORBES DE LUZ EN EL FONDO */
+        .glow-orb {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, rgba(168, 85, 247, 0.1) 50%, transparent 100%);
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: -1;
+            pointer-events: none;
+            animation: pulse 8s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+            100% { transform: translate(5%, 5%) scale(1.2); opacity: 0.8; }
+        }
+
+        /* DISEÑO DE CUADRÍCULA (BENTO GRID) */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, 320px);
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .bento-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: auto;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ACORDEÓN DE PREGUNTAS FRECUENTES */
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+            opacity: 1;
+            margin-top: 1rem;
+        }
+
+        /* CHECKBOX PERSONALIZADO PARA EL COTIZADOR */
+        .checkbox-custom:checked + label {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.5);
+        }
     </style>
 </head>
-<body class="bg-[#020617] text-slate-300 antialiased bg-grid">
+<body class="overflow-x-hidden">
 
-    <nav class="fixed w-[95%] max-w-5xl z-50 glass py-4 px-6 mt-6 left-1/2 -translate-x-1/2 rounded-2xl flex justify-between items-center border border-white/10">
-        <div class="text-2xl font-extrabold tracking-tighter text-white">
-            ANTGI<span class="text-blue-500 font-black">X</span>
-        </div>
-        <div class="flex gap-4 items-center">
-            <a href="https://wa.me/528133787466" class="bg-blue-600/10 text-blue-400 border border-blue-500/20 px-4 py-2 rounded-xl text-sm font-bold hover:bg-blue-600 hover:text-white transition-all">WhatsApp</a>
+    <!-- LUCES DE FONDO -->
+    <div class="glow-orb top-0 -left-20"></div>
+    <div class="glow-orb bottom-20 -right-20" style="background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);"></div>
+
+    <!-- BOTÓN DE WHATSAPP (AQUÍ CAMBIAS TU NÚMERO) -->
+    <a href="https://wa.me/528133787466" target="_blank" class="fixed bottom-8 right-8 z-[100] bg-[#25D366] p-4 rounded-2xl shadow-[0_0_30px_rgba(37,211,102,0.3)] hover:scale-110 transition-transform flex items-center justify-center group">
+        <i data-lucide="message-circle" class="text-white w-7 h-7"></i>
+        <span class="absolute right-full mr-4 bg-white text-black px-4 py-2 rounded-lg text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none uppercase tracking-tighter shadow-xl">Chat WhatsApp</span>
+    </a>
+
+    <!-- BARRA DE NAVEGACIÓN -->
+    <nav class="fixed top-0 w-full z-[100] px-6 py-6 transition-all duration-500" id="navbar">
+        <div class="max-w-7xl mx-auto flex items-center justify-between glass-card px-8 py-4 rounded-[2rem]">
+            <div class="text-2xl font-black tracking-tighter flex items-center gap-2">
+                <div class="gradient-bg w-10 h-10 rounded-xl flex items-center justify-center text-white text-sm italic shadow-lg shadow-blue-500/20">A</div>
+                <span>Antgi<span class="gradient-text text-blue-400">X</span></span>
+            </div>
+            
+            <div class="flex items-center gap-4 sm:gap-10">
+                <a href="#proyectos" class="hidden sm:inline text-[10px] font-black text-gray-400 hover:text-white uppercase tracking-[0.2em] transition-colors">Portafolio</a>
+                <a href="#planes" class="hidden sm:inline text-[10px] font-black text-gray-400 hover:text-white uppercase tracking-[0.2em] transition-colors">Costos</a>
+                <a href="https://wa.me/528133787466" target="_blank" class="gradient-bg text-white px-7 py-3 rounded-full text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all shadow-lg shadow-blue-500/20">
+                    Cotizar
+                </a>
+            </div>
         </div>
     </nav>
 
-    <section class="pt-52 pb-32 px-6 text-center">
-        <div class="max-w-4xl mx-auto">
-            <h1 class="text-6xl md:text-8xl font-black text-white mb-8 tracking-tighter leading-none">
-                CÓDIGO QUE <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">CREA DINERO</span>
+    <!-- SECCIÓN DE BIENVENIDA (HERO) -->
+    <header id="inicio" class="relative pt-64 pb-32 px-6">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-card border border-white/10 mb-10">
+                <span class="w-2 h-2 rounded-full bg-blue-500 animate-ping"></span>
+                <span class="text-[10px] font-black text-gray-300 uppercase tracking-[0.3em]">Agencia 100% Nueva</span>
+            </div>
+            <h1 class="text-6xl md:text-[130px] font-black leading-[0.85] tracking-tighter mb-12 uppercase italic text-white">
+                BUILDING THE <br> <span class="gradient-text">FUTURE WEB.</span>
             </h1>
-            <p class="text-slate-400 text-lg md:text-xl mb-12 max-w-xl mx-auto leading-relaxed italic">
-                En AntgiX no diseñamos páginas, construimos máquinas de ventas impulsadas por IA.
+            <p class="text-gray-400 text-lg md:text-2xl max-w-2xl mx-auto mb-16 leading-relaxed font-light">
+                Diseño disruptivo y código de alto rendimiento para posicionar tu marca en la cima del mercado.
             </p>
-            <a href="https://wa.me/528133787466?text=Hola%20AntgiX,%20quiero%20una%20web" class="bg-white text-black px-12 py-5 rounded-2xl font-black text-xl hover:scale-105 transition shadow-2xl shadow-blue-500/20">
-                ORDENAR AHORA
-            </a>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-8">
+                <a href="#planes" class="w-full sm:w-auto px-12 py-6 gradient-bg rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:scale-105 transition-all shadow-2xl shadow-blue-500/30">
+                    Ver Presupuestos
+                </a>
+                <div class="flex items-center gap-4 text-[10px] font-black text-gray-500 uppercase tracking-[0.3em]">
+                    <span>Explora el laboratorio</span>
+                    <i data-lucide="arrow-down" class="w-4 h-4 animate-bounce text-blue-500"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- TABLERO DE SERVICIOS (BENTO GRID) -->
+    <section id="proyectos" class="py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="bento-grid">
+                <div class="md:col-span-2 md:row-span-2 glass-card rounded-[3.5rem] p-12 flex flex-col justify-end group relative overflow-hidden">
+                    <div class="absolute inset-0 gradient-bg opacity-0 group-hover:opacity-10 transition-opacity"></div>
+                    <div class="w-16 h-16 rounded-2xl gradient-bg flex items-center justify-center mb-8 shadow-xl">
+                        <i data-lucide="sparkles" class="text-white w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-4xl font-black mb-4 tracking-tighter">Estética de Élite</h3>
+                    <p class="text-gray-400 text-lg font-light leading-relaxed">Diseños únicos que transmiten el valor premium de tu negocio.</p>
+                </div>
+                
+                <div class="md:col-span-2 glass-card rounded-[3.5rem] p-10 flex items-center gap-10 group overflow-hidden">
+                    <div class="w-24 h-24 shrink-0 rounded-[2rem] bg-white/5 flex items-center justify-center text-4xl font-black group-hover:gradient-bg transition-all duration-500">2026</div>
+                    <div>
+                        <h4 class="text-xl font-black mb-2 uppercase tracking-tight">Vanguardia</h4>
+                        <p class="text-gray-500 text-sm font-medium">Sitios rápidos, seguros y optimizados para Google.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-[3.5rem] p-10 flex flex-col justify-center text-center group">
+                    <div class="text-5xl font-black mb-2 gradient-text">100%</div>
+                    <div class="text-[10px] font-black text-gray-500 uppercase tracking-widest">Compromiso</div>
+                </div>
+
+                <div class="glass-card rounded-[3.5rem] p-10 flex flex-col justify-center text-center group hover:bg-white hover:text-black transition-all duration-500">
+                    <div class="text-5xl font-black mb-2 italic">24/7</div>
+                    <div class="text-[10px] font-black text-gray-500 uppercase tracking-widest">Soporte</div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <section class="py-20 px-6 max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
-        <div class="glass p-10 rounded-[2.5rem] hover:bg-blue-600/5 transition-all group border-white/5">
-            <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition">⚡</div>
-            <h3 class="text-xl font-bold text-white mb-3">Velocidad Extrema</h3>
-            <p class="text-sm text-slate-500">Optimizamos cada línea de código para que tu web cargue en menos de 1 segundo.</p>
-        </div>
-        <div class="glass p-10 rounded-[2.5rem] hover:bg-cyan-600/5 transition-all group border-white/5">
-            <div class="w-12 h-12 bg-cyan-500/20 rounded-xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition">🧠</div>
-            <h3 class="text-xl font-bold text-white mb-3">IA Nativa</h3>
-            <p class="text-sm text-slate-500">Integración de modelos de lenguaje para automatizar tu atención al cliente.</p>
-        </div>
-        <div class="glass p-10 rounded-[2.5rem] hover:bg-emerald-600/5 transition-all group border-white/5">
-            <div class="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition">💰</div>
-            <h3 class="text-xl font-bold text-white mb-3">Foco en Ventas</h3>
-            <p class="text-sm text-slate-500">Diseño UX pensado exclusivamente en llevar al usuario al checkout o WhatsApp.</p>
+    <!-- SECCIÓN DE COSTOS (ACTUALIZADO CON TU TABULADOR) -->
+    <section id="planes" class="py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col lg:flex-row justify-between items-end mb-20 gap-8">
+                <div class="max-w-2xl">
+                    <h2 class="text-5xl md:text-7xl font-black mb-6 tracking-tighter uppercase italic text-white">Inversión <span class="gradient-text">Real.</span></h2>
+                    <p class="text-gray-500 font-bold uppercase tracking-widest text-xs">Precios sugeridos. Garantía de calidad AntgiX.</p>
+                </div>
+                <div class="hidden lg:block text-right">
+                    <p class="text-[10px] font-black text-gray-600 uppercase tracking-widest mb-1 italic">* Anticipo del 50% para inicio de obra</p>
+                    <div class="w-48 h-1 gradient-bg rounded-full ml-auto"></div>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-10 mb-20">
+                <!-- PACK 01: LANDING PAGE -->
+                <div class="glass-card p-12 rounded-[3.5rem] relative group border-white/5 flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-10">
+                        <span class="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-gray-400 font-black">01</span>
+                        <div class="text-right">
+                            <p class="text-[10px] font-black text-blue-500 uppercase tracking-widest">Básica</p>
+                            <h3 class="text-2xl font-black uppercase italic">Landing Page</h3>
+                        </div>
+                    </div>
+                    <div class="text-5xl font-black mb-4 tracking-tighter">$1,800 - $2,500</div>
+                    <p class="text-[9px] font-bold text-gray-500 uppercase tracking-widest mb-8 italic">Anticipo desde: $900 MXN</p>
+                    <p class="text-gray-500 text-sm mb-10 flex-grow leading-relaxed">Ideal para barberías, talleres o comida rápida. 1 sola página larga con galería, mapa y WhatsApp.</p>
+                    <a href="https://wa.me/528133787466?text=Hola!%20Me%20interesa%20una%20Landing%20Page" target="_blank" class="w-full py-5 rounded-2xl border border-white/10 text-center font-black text-[10px] uppercase tracking-widest hover:bg-white hover:text-black transition-all">Seleccionar</a>
+                </div>
+
+                <!-- PACK 02: WEB NEGOCIOS -->
+                <div class="glass-card p-12 rounded-[3.5rem] relative group border-blue-500/30 bg-blue-500/5 flex flex-col h-full scale-105 z-10">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 gradient-bg px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest shadow-xl">Más Popular</div>
+                    <div class="flex justify-between items-start mb-10">
+                        <span class="w-12 h-12 rounded-2xl gradient-bg flex items-center justify-center text-white font-black">02</span>
+                        <div class="text-right">
+                            <p class="text-[10px] font-black text-purple-400 uppercase tracking-widest">Intermedia</p>
+                            <h3 class="text-2xl font-black uppercase italic">Web Negocios</h3>
+                        </div>
+                    </div>
+                    <div class="text-5xl font-black mb-4 tracking-tighter">$3,800 - $5,500</div>
+                    <p class="text-[9px] font-bold text-blue-300/50 uppercase tracking-widest mb-8 italic">Anticipo desde: $1,900 MXN</p>
+                    <p class="text-gray-300 text-sm mb-10 flex-grow leading-relaxed">3 a 5 secciones. Formulario de correo y diseño avanzado. Perfecto para dentistas, consultorios o despachos.</p>
+                    <a href="https://wa.me/528133787466?text=Hola!%20Me%20interesa%20una%20Web%20de%20Negocios" target="_blank" class="w-full py-5 rounded-2xl gradient-bg text-center font-black text-[10px] uppercase tracking-widest shadow-lg shadow-blue-500/20 hover:scale-105 transition-all text-white">Elegir Plan</a>
+                </div>
+
+                <!-- PACK 03: CATÁLOGO / E-COMMERCE -->
+                <div class="glass-card p-12 rounded-[3.5rem] relative group border-white/5 flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-10">
+                        <span class="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-gray-400 font-black">03</span>
+                        <div class="text-right">
+                            <p class="text-[10px] font-black text-orange-400 uppercase tracking-widest">Ventas</p>
+                            <h3 class="text-2xl font-black uppercase italic">E-commerce</h3>
+                        </div>
+                    </div>
+                    <div class="text-5xl font-black mb-4 tracking-tighter">$6,500 - $8,500</div>
+                    <p class="text-[9px] font-bold text-gray-500 uppercase tracking-widest mb-8 italic">Anticipo desde: $3,250 MXN</p>
+                    <p class="text-gray-500 text-sm mb-10 flex-grow leading-relaxed">Catálogo de productos con carrito o pedido directo a WhatsApp. Para boutiques y tiendas locales.</p>
+                    <a href="https://wa.me/528133787466?text=Hola!%20Me%20interesa%20un%20E-commerce" target="_blank" class="w-full py-5 rounded-2xl border border-white/10 text-center font-black text-[10px] uppercase tracking-widest hover:bg-white hover:text-black transition-all text-white">Consultar</a>
+                </div>
+            </div>
+
+            <!-- COTIZADOR EXPRESS INTERACTIVO -->
+            <div class="glass-card rounded-[4rem] p-12 md:p-16 border-blue-500/10">
+                <div class="grid lg:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <h4 class="text-3xl font-black mb-4 uppercase tracking-tighter italic text-white">Cotizador <span class="gradient-text">Express.</span></h4>
+                        <p class="text-gray-400 text-sm mb-10 leading-relaxed">Elige un plan base y agrega funciones extras para ver un estimado.</p>
+                        
+                        <div class="space-y-4">
+                            <!-- Selector de Plan -->
+                            <div class="mb-6">
+                                <label class="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2 block">Selecciona un Plan Base:</label>
+                                <select id="plan-select" onchange="updatePrice()" class="w-full p-4 rounded-xl bg-white/5 border border-white/10 outline-none text-sm font-bold">
+                                    <option value="1800">Landing Page (Básica) - $1,800</option>
+                                    <option value="3800">Web Negocios (Intermedia) - $3,800</option>
+                                    <option value="6500">E-commerce / Catálogo - $6,500</option>
+                                    <option value="12000">App Personalizada - $12,000</option>
+                                </select>
+                            </div>
+
+                            <!-- Extras -->
+                            <div class="flex items-center">
+                                <input type="checkbox" id="seo-pro" class="hidden checkbox-custom" data-price="1500" onchange="updatePrice()">
+                                <label for="seo-pro" class="flex items-center justify-between w-full p-4 rounded-xl border border-white/5 cursor-pointer hover:border-white/10 transition-all text-gray-300 text-sm">
+                                    <span>SEO Pro (Aparecer en Google)</span>
+                                    <span class="font-black text-blue-400">+$1,500</span>
+                                </label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="admin-panel" class="hidden checkbox-custom" data-price="3500" onchange="updatePrice()">
+                                <label for="admin-panel" class="flex items-center justify-between w-full p-4 rounded-xl border border-white/5 cursor-pointer hover:border-white/10 transition-all text-gray-300 text-sm">
+                                    <span>Panel de Control / Inventarios</span>
+                                    <span class="font-black text-purple-400">+$3,500</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white/5 p-12 rounded-[3rem] border border-white/10 text-center">
+                        <p class="text-[10px] font-black text-gray-500 uppercase tracking-[0.4em] mb-4">Estimado Total</p>
+                        <div class="text-7xl font-black tracking-tighter mb-10 text-white"><span id="estimated-price">$1,800</span></div>
+                        
+                        <button onclick="sendQuote()" class="w-full py-6 gradient-bg rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl shadow-blue-500/20 hover:scale-[1.02] transition-all text-white">
+                            Enviar Cotización a WhatsApp
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SECCIÓN APP PERSONALIZADA -->
+            <div class="mt-16 glass-card p-10 rounded-[3rem] border-orange-500/20 text-center">
+                <h4 class="text-xl font-black uppercase italic mb-4">4. App Personalizada (A la medida)</h4>
+                <p class="text-gray-500 text-sm mb-8">Desde <strong>$12,000 - $20,000+ MXN</strong>. Sistemas complejos, bases de datos y control interno.</p>
+                <a href="https://wa.me/528133787466?text=Hola!%20Me%20interesa%20una%20App%20Personalizada" target="_blank" class="inline-block px-10 py-4 border border-white/10 rounded-full font-black text-[10px] uppercase tracking-widest hover:bg-white hover:text-black transition-all">Cotizar App Especial</a>
+            </div>
         </div>
     </section>
 
-    <section class="py-32 px-6 text-center">
-        <div class="glass p-16 rounded-[3rem] border-blue-500/20 max-w-4xl mx-auto">
-            <h2 class="text-4xl font-black text-white mb-6 tracking-tight italic uppercase">¿Dudas? Mandame un mensaje</h2>
-            <a href="https://wa.me/528133787466" class="text-4xl font-bold text-blue-400 hover:text-white transition break-words">
-                81 3378 7466
-            </a>
+    <!-- MÉTODOS DE PAGO -->
+    <section class="py-16 px-6 bg-neutral-950/20 border-y border-white/5">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-30">
+            <span class="font-black italic">OXXO Pay</span>
+            <span class="font-black italic">Mercado Pago</span>
+            <span class="font-black italic">PayPal</span>
+            <span class="font-black italic">Transferencia SPEI</span>
         </div>
     </section>
 
+    <!-- FOOTER -->
+    <footer class="pt-32 pb-16 px-6 bg-[#030303]">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col lg:flex-row justify-between items-start gap-20 mb-32">
+                <div class="max-w-md text-left">
+                    <div class="text-[12vw] font-black leading-none tracking-tighter mb-12 opacity-5 select-none gradient-text italic">ANTGIX.</div>
+                    <h2 class="text-5xl font-black mb-8 leading-none tracking-tighter italic text-white uppercase">¿Hacemos algo <br> legendario?</h2>
+                    <div class="space-y-6">
+                        <a href="mailto:antgix.solutions@gmail.com" class="flex items-center gap-4 text-xl font-light hover:text-blue-500 transition-colors group">
+                            <i data-lucide="mail" class="w-6 h-6 text-blue-500"></i> antgix.solutions@gmail.com
+                        </a>
+                        <a href="https://wa.me/528133787466" class="flex items-center gap-4 text-xl font-light hover:text-green-500 transition-colors group text-white">
+                            <i data-lucide="message-square" class="w-6 h-6 text-green-500"></i> 81 3378 7466
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <p class="text-gray-700 text-[9px] font-black uppercase tracking-[0.5em] text-center">© 2026 AntgiX Solutions — Nuevo León, México.</p>
+        </div>
+    </footer>
+
+    <!-- LÓGICA DE PROGRAMACIÓN (EXPLICADA) -->
+    <script>
+        // Inicializa los iconos de Lucide
+        lucide.createIcons();
+
+        // Esta función calcula el precio total en el cotizador express
+        function updatePrice() {
+            // Obtenemos el precio del plan seleccionado en el menú desplegable
+            let base = parseInt(document.getElementById('plan-select').value);
+            let total = base;
+
+            // Revisamos cada checkbox de extras (SEO, Panel de Control, etc.)
+            const checkboxes = document.querySelectorAll('.checkbox-custom');
+            checkboxes.forEach(cb => {
+                if(cb.checked) {
+                    // Si el checkbox está marcado, sumamos su precio al total
+                    total += parseInt(cb.dataset.price);
+                }
+            });
+
+            // Mostramos el precio final con formato de dinero
+            document.getElementById('estimated-price').innerText = '$' + total.toLocaleString();
+        }
+
+        // Esta función envía la cotización por WhatsApp al hacer clic en el botón
+        function sendQuote() {
+            const total = document.getElementById('estimated-price').innerText;
+            const planText = document.getElementById('plan-select').options[document.getElementById('plan-select').selectedIndex].text;
+            
+            // Creamos el mensaje que se enviará automáticamente
+            let message = `Hola AntgiX! Quiero una cotización. Plan: ${planText}. Estimado Total: ${total}.`;
+            
+            // Abrimos WhatsApp con el mensaje ya escrito
+            const encoded = encodeURIComponent(message);
+            window.open(`https://wa.me/528133787466?text=${encoded}`, '_blank');
+        }
+
+        // Efecto visual para que la barra de navegación cambie al bajar la página
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.style.paddingBlock = "1rem";
+                nav.querySelector('div').style.background = "rgba(5, 5, 5, 0.95)";
+            } else {
+                nav.style.paddingBlock = "1.5rem";
+                nav.querySelector('div').style.background = "rgba(255, 255, 255, 0.02)";
+            }
+        });
+    </script>
 </body>
 </html>
